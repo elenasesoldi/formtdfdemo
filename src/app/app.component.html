@@ -1,8 +1,40 @@
 <div class="container-fluid">
-  <h1>Bootcamp Enrollment Form</h1>
+  <h2>Users</h2>
+  <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]="showusers">
+    <label class="custom-control-label" for="customSwitch1">Show Users</label>
+  </div>
+  <div *ngIf="showusers">
+    <div *ngFor="let user of users">
+      <div class="form-check">
+        <input id="{{checkbox_ + user.id}}" type="checkbox" class="user_checkbox">
+        <label for="{{checkbox_ + user.id}}">User {{user.id}}: {{user.name}}</label>        
+      </div>
+    </div>
+
+    <button class="btn btn-secondary btn-sm" type="button" (click)="deleteUsers()">Delete</button>
+    
+  </div>
+
+  <form style="margin-top: 30px" class="form-inline" (ngSubmit)="getUser(id.value)">
+    <div class="form-group mx-sm-3 mb-2">
+      <input #id type="number" class="form-control" id="inputId" placeholder="User Id">
+    </div>
+    <button type="submit" class="btn btn-secondary btn-sm mb-2">Get User</button>
+  </form>
+
+  <p *ngIf="gettedUser">
+    {{gettedUser | json}}
+  </p>
+  
+  
   <div class="alert alert-danger" *ngIf="errorMsg">
     {{errorMsg}}
   </div>
+
+  <h2 style="margin-top: 30px">New User
+    <button class="btn btn-primary btn-sm" type="button" (click)="newUser()">+</button>
+  </h2>
   <form #userForm="ngForm" *ngIf="!submitted" (ngSubmit)="onSubmit()" novalidate>
 
     {{userForm.value | json}}

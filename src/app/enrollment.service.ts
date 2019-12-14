@@ -13,12 +13,34 @@ export class EnrollmentService {
   private url: string;
 
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:3000/enroll';
+    this.url = 'http://localhost:3000/';
   }
 
-  public enroll(user: User): Observable<any> {
-    return this.http.post<any>(this.url, user)
+  public addUser(user: User): Observable<any> {
+    return this.http.post<User>(this.url + 'users/add_user', user)
       .pipe(catchError(this.errorHandler));
+  }
+
+  public get(): Observable<any> {
+    return this.http.get<any>(this.url).pipe(catchError(this.errorHandler));
+  }
+
+  public getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url + 'users/').pipe(catchError(this.errorHandler));
+  }
+
+  public getUser(id: number): Observable<User> {
+    return this.http.get<User>(this.url + 'users/' + id).pipe(catchError(this.errorHandler));
+  }
+
+  public updateUser(user: User): Observable<any> {
+    return this.http.put<User>(this.url + 'users/update_user', user)
+      .pipe(catchError(this.errorHandler));
+  }
+
+  public deleteUser(user: User): Observable<any> {
+    return this.http.delete(this.url + 'users/delete_user/' + user.id)
+    .pipe(catchError(this.errorHandler));
   }
 
   private errorHandler(error: HttpErrorResponse): Observable<any> {
